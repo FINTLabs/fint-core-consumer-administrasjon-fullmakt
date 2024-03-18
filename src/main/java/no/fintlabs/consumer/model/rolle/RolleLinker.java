@@ -44,8 +44,8 @@ public class RolleLinker extends FintLinker<RolleResource> {
     @Override
     public Stream<String> getAllSelfHrefs(RolleResource resource) {
         Stream.Builder<String> builder = Stream.builder();
-        if (!isNull(resource.getSystemId()) && !StringUtils.isEmpty(resource.getSystemId().getIdentifikatorverdi())) {
-            builder.add(createHrefWithId(resource.getSystemId().getIdentifikatorverdi(), "systemid"));
+        if (!isNull(resource.getNavn()) && !StringUtils.isEmpty(resource.getNavn().getIdentifikatorverdi())) {
+            builder.add(createHrefWithId(resource.getNavn().getIdentifikatorverdi(), "navn"));
         }
 
         return builder.build();
@@ -53,8 +53,8 @@ public class RolleLinker extends FintLinker<RolleResource> {
 
     int[] hashCodes(RolleResource resource) {
         IntStream.Builder builder = IntStream.builder();
-        if (!isNull(resource.getSystemId()) && !StringUtils.isEmpty(resource.getSystemId().getIdentifikatorverdi())) {
-            builder.add(resource.getSystemId().getIdentifikatorverdi().hashCode());
+        if (!isNull(resource.getNavn()) && !StringUtils.isEmpty(resource.getNavn().getIdentifikatorverdi())) {
+            builder.add(resource.getNavn().getIdentifikatorverdi().hashCode());
         }
 
         return builder.build().toArray();

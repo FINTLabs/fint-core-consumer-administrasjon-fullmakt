@@ -69,7 +69,7 @@ public class RolleService extends CacheService<RolleResource> {
         return getCache().getLastUpdatedByFilter(systemId.hashCode(),
                 (resource) -> Optional
                         .ofNullable(resource)
-                        .map(RolleResource::getSystemId)
+                        .map(RolleResource::getNavn)
                         .map(Identifikator::getIdentifikatorverdi)
                         .map(systemId::equals)
                         .orElse(false)
