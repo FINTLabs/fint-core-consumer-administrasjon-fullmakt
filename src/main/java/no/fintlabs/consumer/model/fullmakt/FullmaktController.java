@@ -6,7 +6,7 @@ import no.fint.model.resource.administrasjon.fullmakt.FullmaktResource;
 import no.fint.relations.FintRelationsMediaType;
 import no.fintlabs.consumer.config.RestEndpoints;
 import no.fintlabs.core.consumer.shared.resource.CacheService;
-import no.fintlabs.core.consumer.shared.resource.WriteableConsumerRestController;
+import no.fintlabs.core.consumer.shared.resource.ConsumerRestController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping(name = "Fullmakt", value = RestEndpoints.FULLMAKT, produces = {FintRelationsMediaType.APPLICATION_HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE})
-public class FullmaktController extends WriteableConsumerRestController<FullmaktResource> {
+public class FullmaktController extends ConsumerRestController<FullmaktResource> {
 
     public FullmaktController(
             CacheService<FullmaktResource> cacheService,
             FullmaktLinker fintLinker,
-            FullmaktConfig fullmaktConfig,
-            FullmaktEventKafkaProducer fullmaktEventKafkaProducer,
-            FullmaktResponseKafkaConsumer fullmaktResponseKafkaConsumer,
-            FintFilterService odataFilterService,
-            FullmaktRequestKafkaConsumer fullmaktRequestKafkaConsumer) {
-        super(cacheService, fintLinker, fullmaktConfig, fullmaktEventKafkaProducer, fullmaktResponseKafkaConsumer, odataFilterService, fullmaktRequestKafkaConsumer);
+            FintFilterService odataFilterService) {
+        super(cacheService, fintLinker, odataFilterService);
     }
 }

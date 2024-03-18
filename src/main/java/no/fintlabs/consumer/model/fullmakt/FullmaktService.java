@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.model.felles.kompleksedatatyper.Identifikator;
 import no.fint.model.resource.administrasjon.fullmakt.FullmaktResource;
+import no.fint.model.resource.administrasjon.fullmakt.RolleResource;
 import no.fintlabs.cache.Cache;
 import no.fintlabs.cache.CacheManager;
 import no.fintlabs.cache.packing.PackingTypes;
@@ -24,17 +25,15 @@ public class FullmaktService extends CacheService<FullmaktResource> {
 
     private final FullmaktLinker linker;
 
-    private final FullmaktResponseKafkaConsumer fullmaktResponseKafkaConsumer;
 
     public FullmaktService(
             FullmaktConfig consumerConfig,
             CacheManager cacheManager,
             FullmaktEntityKafkaConsumer entityKafkaConsumer,
-            FullmaktLinker linker, FullmaktResponseKafkaConsumer fullmaktResponseKafkaConsumer) {
+            FullmaktLinker linker) {
         super(consumerConfig, cacheManager, entityKafkaConsumer);
         this.entityKafkaConsumer = entityKafkaConsumer;
         this.linker = linker;
-        this.fullmaktResponseKafkaConsumer = fullmaktResponseKafkaConsumer;
     }
 
     @Override
@@ -50,17 +49,12 @@ public class FullmaktService extends CacheService<FullmaktResource> {
 
     private void addResourceToCache(ConsumerRecord<String, FullmaktResource> consumerRecord) {
         this.eventLogger.logDataRecieved();
-        FullmaktResource resource = consumerRecord.value();
-        if (resource == null) {
+        if (consumerRecord.value() == null) {
             getCache().remove(consumerRecord.key());
         } else {
+            FullmaktResource resource = consumerRecord.value();
             linker.mapLinks(resource);
-            this.getCache().put(consumerRecord.key(), resource, linker.hashCodes(resource));
-            if (consumerRecord.headers().lastHeader("event-corr-id") != null){
-                String corrId = new String(consumerRecord.headers().lastHeader("event-corr-id").value(), StandardCharsets.UTF_8);
-                log.debug("Adding corrId to EntityResponseCache: {}", corrId);
-                fullmaktResponseKafkaConsumer.getEntityCache().add(corrId, resource);
-            }
+            getCache().put(consumerRecord.key(), resource, linker.hashCodes(resource));
         }
     }
 

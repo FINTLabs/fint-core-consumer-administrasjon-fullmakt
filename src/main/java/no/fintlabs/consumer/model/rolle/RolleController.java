@@ -6,7 +6,7 @@ import no.fint.model.resource.administrasjon.fullmakt.RolleResource;
 import no.fint.relations.FintRelationsMediaType;
 import no.fintlabs.consumer.config.RestEndpoints;
 import no.fintlabs.core.consumer.shared.resource.CacheService;
-import no.fintlabs.core.consumer.shared.resource.WriteableConsumerRestController;
+import no.fintlabs.core.consumer.shared.resource.ConsumerRestController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 @RequestMapping(name = "Rolle", value = RestEndpoints.ROLLE, produces = {FintRelationsMediaType.APPLICATION_HAL_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE})
-public class RolleController extends WriteableConsumerRestController<RolleResource> {
+public class RolleController extends ConsumerRestController<RolleResource> {
 
     public RolleController(
             CacheService<RolleResource> cacheService,
             RolleLinker fintLinker,
-            RolleConfig rolleConfig,
-            RolleEventKafkaProducer rolleEventKafkaProducer,
-            RolleResponseKafkaConsumer rolleResponseKafkaConsumer,
-            FintFilterService odataFilterService,
-            RolleRequestKafkaConsumer rolleRequestKafkaConsumer) {
-        super(cacheService, fintLinker, rolleConfig, rolleEventKafkaProducer, rolleResponseKafkaConsumer, odataFilterService, rolleRequestKafkaConsumer);
+            FintFilterService odataFilterService) {
+        super(cacheService, fintLinker, odataFilterService);
     }
 }

@@ -24,17 +24,14 @@ public class RolleService extends CacheService<RolleResource> {
 
     private final RolleLinker linker;
 
-    private final RolleResponseKafkaConsumer rolleResponseKafkaConsumer;
-
     public RolleService(
             RolleConfig consumerConfig,
             CacheManager cacheManager,
             RolleEntityKafkaConsumer entityKafkaConsumer,
-            RolleLinker linker, RolleResponseKafkaConsumer rolleResponseKafkaConsumer) {
+            RolleLinker linker) {
         super(consumerConfig, cacheManager, entityKafkaConsumer);
         this.entityKafkaConsumer = entityKafkaConsumer;
         this.linker = linker;
-        this.rolleResponseKafkaConsumer = rolleResponseKafkaConsumer;
     }
 
     @Override
@@ -50,17 +47,12 @@ public class RolleService extends CacheService<RolleResource> {
 
     private void addResourceToCache(ConsumerRecord<String, RolleResource> consumerRecord) {
         this.eventLogger.logDataRecieved();
-        RolleResource resource = consumerRecord.value();
-        if (resource == null) {
+        if (consumerRecord.value() == null) {
             getCache().remove(consumerRecord.key());
         } else {
-            linker.mapLinks(resource);
-            this.getCache().put(consumerRecord.key(), resource, linker.hashCodes(resource));
-            if (consumerRecord.headers().lastHeader("event-corr-id") != null){
-                String corrId = new String(consumerRecord.headers().lastHeader("event-corr-id").value(), StandardCharsets.UTF_8);
-                log.debug("Adding corrId to EntityResponseCache: {}", corrId);
-                rolleResponseKafkaConsumer.getEntityCache().add(corrId, resource);
-            }
+            RolleResource rolleResource = consumerRecord.value();
+            linker.mapLinks(rolleResource);
+            getCache().put(consumerRecord.key(), rolleResource, linker.hashCodes(rolleResource));
         }
     }
 
