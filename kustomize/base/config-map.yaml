@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fint-core-consumer-administrasjon-fullmakt
+data:
+  TZ: 'Europe/Oslo'
+  JAVA_TOOLS_OPTIONS: '-XX:+ExitOnOutOfMemoryError -Xmx480M'
+  spring.webflux.base-path: '/administrasjon/fullmakt'
+  fint.consumer.domain: 'administrasjon'
+  fint.consumer.package: 'fullmakt'
