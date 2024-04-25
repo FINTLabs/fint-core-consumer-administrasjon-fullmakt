@@ -1,8 +1,10 @@
 package no.fintlabs.consumer.model.fullmakt;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.antlr.FintFilterService;
 import no.fint.model.resource.administrasjon.fullmakt.FullmaktResource;
+import no.fint.model.resource.administrasjon.organisasjon.ArbeidslokasjonResource;
 import no.fint.relations.FintRelationsMediaType;
 import no.fintlabs.consumer.config.RestEndpoints;
 import no.fintlabs.core.consumer.shared.resource.CacheService;
@@ -23,5 +25,10 @@ public class FullmaktController extends ConsumerRestController<FullmaktResource>
             FullmaktLinker fintLinker,
             FintFilterService odataFilterService) {
         super(cacheService, fintLinker, odataFilterService);
+    }
+
+    @PostConstruct
+    private void registerIdentificators() {
+        super.registerIdenficatorHandler("systemId", FullmaktResource::getSystemId);
     }
 }
