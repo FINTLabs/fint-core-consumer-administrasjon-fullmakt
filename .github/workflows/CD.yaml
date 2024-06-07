@@ -58,6 +58,8 @@ jobs:
 #          - visma-com
           - evry-com
           - sdworx-com
+          - vestfoldfylke-no
+          - telemarkfylke-no
         cluster:
 #          - aks-alpha-fint-2021-11-18
           - aks-beta-fint-2021-11-23
