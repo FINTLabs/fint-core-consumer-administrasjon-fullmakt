@@ -9,7 +9,7 @@ patchesStrategicMerge:
   - ingress-route.yaml
 commonLabels:
   app.kubernetes.io/name: fint-core-consumer-administrasjon-fullmakt
-  app.kubernetes.io/instance: fint-core-consumer-administrasjon-fullmakt_evry_com
+  app.kubernetes.io/instance: fint-core-consumer-administrasjon-fullmakt_telemarkfylke_no
   app.kubernetes.io/version: latest
   app.kubernetes.io/component: backend
   app.kubernetes.io/part-of: fint-core
