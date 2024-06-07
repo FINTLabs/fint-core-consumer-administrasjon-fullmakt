@@ -5,4 +5,4 @@ metadata:
 spec:
   acls:
     - permission: admin
-      topic: "vestfoldfylke.no.fint-core.*"
+      topic: "vestfoldfylke-no.fint-core.*"
