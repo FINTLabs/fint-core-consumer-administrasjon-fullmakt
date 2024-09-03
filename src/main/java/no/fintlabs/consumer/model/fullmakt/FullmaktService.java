@@ -43,11 +43,11 @@ public class FullmaktService extends CacheService<FullmaktResource> {
 
     @PostConstruct
     private void registerKafkaListener() {
-        long retention = entityKafkaConsumer.registerListener(FullmaktResource.class, this::addResourceToCache);
-        getCache().setRetentionPeriodInMs(retention);
+        entityKafkaConsumer.registerListener(FullmaktResource.class, this::addResourceToCache);
     }
 
     private void addResourceToCache(ConsumerRecord<String, FullmaktResource> consumerRecord) {
+        updateRetensionTime(consumerRecord.headers().lastHeader("topic-retension-time"));
         this.eventLogger.logDataRecieved();
         if (consumerRecord.value() == null) {
             getCache().remove(consumerRecord.key());
